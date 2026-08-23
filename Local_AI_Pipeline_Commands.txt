@@ -1,0 +1,133 @@
+LOCAL AI DOCUMENT PIPELINE
+==========================
+
+Project folder:
+C:\AI\local-document-pipeline
+
+Python script:
+C:\AI\local-document-pipeline\local_ai_pipeline.py
+
+
+NORMAL STARTUP
+--------------
+
+1. Open PowerShell.
+
+2. Move to the project folder:
+
+cd C:\AI\local-document-pipeline
+
+3. Activate the virtual environment:
+
+.\.venv\Scripts\Activate.ps1
+
+4. Confirm the prompt begins with:
+
+(.venv) PS C:\AI\local-document-pipeline>
+
+5. Run the pipeline:
+
+python local_ai_pipeline.py
+
+6. Paste the full PDF or image path when requested.
+
+
+RUN FROM ANY FOLDER
+-------------------
+
+Use this single command:
+
+& "C:\AI\local-document-pipeline\.venv\Scripts\python.exe" "C:\AI\local-document-pipeline\local_ai_pipeline.py"
+
+
+SUPPORTED FILES
+---------------
+
+PDF
+PNG
+JPG
+JPEG
+WEBP
+BMP
+TIFF
+
+
+HOW THE PIPELINE WORKS
+----------------------
+
+Typed PDF:
+PDF → direct text extraction → Qwen3 analysis
+
+Scanned PDF:
+PDF pages → image conversion → Qwen2.5-VL OCR → Qwen3 analysis
+
+Image:
+Image → Qwen2.5-VL OCR → Qwen3 analysis
+
+
+OUTPUT FILE
+-----------
+
+The result is saved beside the original document as:
+
+original-filename_analysis.txt
+
+
+USEFUL COMMANDS
+---------------
+
+Check installed Ollama models:
+
+ollama list
+
+Check models currently loaded in RAM:
+
+ollama ps
+
+Stop the heavy reasoning model:
+
+ollama stop deepseek-r1:14b
+
+Stop the large Qwen text model:
+
+ollama stop qwen2.5:14b-instruct-q5_K_M
+
+Stop the vision model:
+
+ollama stop qwen2.5vl:7b
+
+Stop the general Qwen model:
+
+ollama stop qwen3:8b
+
+
+PACKAGE CHECK
+-------------
+
+python -c "import pypdf, pypdfium2, PIL, requests; print('All packages installed successfully')"
+
+AES PDF support check:
+
+python -c "from Crypto.Cipher import AES; print('AES support installed')"
+
+
+EXIT THE VIRTUAL ENVIRONMENT
+----------------------------
+
+deactivate
+
+
+COMMON ERROR
+------------
+
+Error:
+can't open file 'C:\Users\zubai\local_ai_pipeline.py'
+
+Cause:
+PowerShell is in the wrong folder.
+
+Fix:
+
+cd C:\AI\local-document-pipeline
+.\.venv\Scripts\Activate.ps1
+python local_ai_pipeline.py

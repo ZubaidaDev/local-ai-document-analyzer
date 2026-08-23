@@ -1,0 +1,69 @@
+LOCAL AI STREAMLIT UI - BASIC COMMANDS
+======================================
+
+Project folder:
+C:\AI\local-document-pipeline
+
+1. Open the project folder
+--------------------------
+cd C:\AI\local-document-pipeline
+
+2. Activate the Streamlit environment
+-------------------------------------
+.\.venv-ui\Scripts\Activate.ps1
+
+You should see:
+(.venv-ui)
+
+3. Start the Streamlit UI
+-------------------------
+python -m streamlit run app.py
+
+Local address:
+http://localhost:8501
+
+4. Start using the launcher
+---------------------------
+.\Start_Local_AI_UI.ps1
+
+5. Stop the Streamlit UI
+------------------------
+Press:
+Ctrl + C
+
+6. Check the UI code for syntax errors
+--------------------------------------
+python -m py_compile app.py
+
+7. Check the backend code for syntax errors
+-------------------------------------------
+python -m py_compile local_ai_pipeline.py
+
+8. Check Streamlit version
+--------------------------
+python -m streamlit version
+
+9. Check whether Ollama is running
+----------------------------------
+Invoke-RestMethod http://localhost:11434/api/version
+
+10. Check loaded Ollama models
+------------------------------
+ollama ps
+
+11. Stop a loaded model
+-----------------------
+ollama stop qwen3:8b
+ollama stop qwen2.5vl:7b
+
+12. Deactivate the UI environment
+---------------------------------
+deactivate
+
+IMPORTANT
+---------
+.venv-ui = Streamlit UI environment (Python 3.12 x64)
+.venv    = Original terminal pipeline environment (Python 3.13 ARM64)
+
+Open WebUI and Docker are not required for this app.
+Ollama must be running before document analysis.

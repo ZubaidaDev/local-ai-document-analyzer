@@ -1,0 +1,31 @@
+# Python environments
+.venv/
+.venv-ui/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Generated AI outputs
+*_analysis.txt
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Secrets / environment variables
+.env
+.streamlit/secrets.toml
+
+# Old working backups - keep locally, don't publish
+local_ai_pipeline_backup.py
+local_ai_pipeline_before_ui.py
+local_ai_pipeline_with_tasks.py
+app_test_backup.py
+
+# Windows files
+Thumbs.db
+Desktop.ini
