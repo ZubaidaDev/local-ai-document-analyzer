@@ -1,176 +1,169 @@
-LOCAL AI DOCUMENT ANALYZER
-==========================
+# Local AI Document Analyzer
 
-1. PROJECT OVERVIEW
--------------------
-Local AI Document Analyzer is an offline document-processing prototype.
+Offline document analysis using **Ollama, Qwen, and Streamlit**.
 
-It extracts text from PDF, DOCX and image files and analyzes the
-content using locally installed Ollama models.
+The application processes documents locally without requiring a cloud AI API. It automatically extracts text from supported files, uses vision OCR when necessary, and sends the extracted content to a local language model for analysis.
 
-The project does not require a cloud AI API, Open WebUI or Docker.
+## Features
 
-2. MAIN FEATURES
-----------------
-- Typed PDF text extraction
-- Scanned PDF OCR
-- Image OCR
-- DOCX paragraph and table extraction
-- General document summaries
-- Invoice and receipt extraction
-- Contract analysis
-- Exam study notes
-- Key findings and action items
-- Custom questions
-- Long-document chunking
-- Downloadable analysis reports
-- Local and offline AI processing
+* Selectable PDF text extraction
+* Scanned PDF OCR
+* Image OCR
+* DOCX paragraph and table extraction
+* Automatic document-type routing
+* Long-document chunking
+* General summaries
+* Invoice and receipt extraction
+* Contract analysis
+* Study notes
+* Key findings and action items
+* Custom document questions
+* Streamlit web interface
+* Downloadable analysis reports
+* Local AI processing
 
-3. SUPPORTED FILE TYPES
------------------------
-- PDF
-- DOCX
-- PNG
-- JPG
-- JPEG
-- WEBP
-- BMP
-- TIFF
+## Supported Files
 
-4. AI MODELS
-------------
-Text model:
-qwen3:8b
+`PDF` · `DOCX` · `PNG` · `JPG` · `JPEG` · `WEBP` · `BMP` · `TIFF`
 
-Vision and OCR model:
-qwen2.5vl:7b
+## Models
 
-5. PROJECT STRUCTURE
---------------------
-app.py
-    Streamlit web interface.
+* **Text analysis:** `qwen3:8b`
+* **Vision / OCR:** `qwen2.5vl:7b`
 
-local_ai_pipeline.py
-    Document extraction, OCR, Ollama communication,
-    chunking and terminal interface.
+Models are served locally through [Ollama](https://ollama.com/).
 
-Start_Local_AI_UI.ps1
-    Starts the Streamlit application.
+## Architecture
 
-Start_Local_AI_Pipeline.ps1
-    Starts the terminal application.
+```text
+Document
+   │
+   ▼
+File Type Detection
+   │
+   ├── DOCX ──────────► Text + Table Extraction
+   ├── Typed PDF ─────► Embedded Text Extraction
+   └── Scan / Image ──► Vision OCR
+                           │
+                           ▼
+                     Extracted Text
+                           │
+                           ▼
+                        Chunking
+                           │
+                           ▼
+                     Local LLM Analysis
+                           │
+                           ▼
+                 Streamlit Result + Report
+```
 
-requirements-ui.txt
-    Packages required by the Streamlit environment.
+## Quick Start
 
-requirements-pipeline.txt
-    Packages required by the original terminal environment.
+### 1. Install Ollama
 
-Local_AI_UI_Commands.txt
-    Important Streamlit commands.
+Download and install Ollama, then pull the required models:
 
-Local_AI_Pipeline_Commands.txt
-    Important terminal pipeline commands.
+```powershell
+ollama pull qwen3:8b
+ollama pull qwen2.5vl:7b
+```
 
-6. SYSTEM REQUIREMENTS
-----------------------
-- Windows
-- Ollama
-- Python 3.13 ARM64 for the original pipeline
-- Python 3.12 x64 for Streamlit
-- At least 16 GB RAM recommended
-- Required Ollama models downloaded locally
+### 2. Clone the repository
 
-7. START THE STREAMLIT UI
--------------------------
-Open PowerShell:
+```powershell
+git clone https://github.com/ZubaidaDev/local-ai-document-analyzer.git
+cd local-ai-document-analyzer
+```
 
-cd C:\AI\local-document-pipeline
+### 3. Create the Python environment
+
+```powershell
+python -m venv .venv-ui
 .\.venv-ui\Scripts\Activate.ps1
+pip install -r requirements-ui.txt
+```
+
+### 4. Start the application
+
+```powershell
 python -m streamlit run app.py
+```
 
 Open:
+
+```text
 http://localhost:8501
+```
 
-The launcher can also be used:
+The PowerShell launcher can also be used:
 
+```powershell
 .\Start_Local_AI_UI.ps1
+```
 
-8. START THE TERMINAL VERSION
------------------------------
-cd C:\AI\local-document-pipeline
-.\Start_Local_AI_Pipeline.ps1
+## Usage
 
-9. CHECK OLLAMA
----------------
-Check whether Ollama is running:
-
-Invoke-RestMethod http://localhost:11434/api/version
-
-Check loaded models:
-
-ollama ps
-
-10. APPLICATION WORKFLOW
-------------------------
 1. Upload a supported document.
-2. Choose an analysis task.
-3. Click Analyze document.
-4. Review the AI analysis.
-5. Review the extracted document text.
-6. Download the complete report.
+2. Select an analysis task.
+3. Click **Analyze document**.
+4. Review the AI analysis or extracted text.
+5. Download the complete report if required.
 
-11. PROCESSING ARCHITECTURE
----------------------------
-Uploaded document
-        |
-        v
-File-type detection
-        |
-        +--> DOCX text extraction
-        |
-        +--> Typed PDF extraction
-        |
-        +--> Scanned PDF or image OCR
-        |
-        v
-Text chunking
-        |
-        v
-Local Ollama analysis
-        |
-        v
-Displayed and downloadable report
+## Tested Environment
 
-12. PRIVACY
------------
-Files and AI requests are processed locally on the computer.
+Development and testing were performed on:
 
-No cloud AI API is required for normal operation.
+* Windows 11 ARM64
+* 16 GB RAM
+* Ollama local inference
+* Python 3.13 ARM64 for the original CLI pipeline
+* Python 3.12 x64 for the Streamlit environment
 
-13. LIMITATIONS
----------------
-- AI output may contain incorrect information.
-- Important calculations, legal terms and dates must be verified.
-- Large scanned documents may take considerable time.
-- Performance depends on available RAM and CPU resources.
-- The project is a hackathon prototype, not a certified
-  security or defense production system.
+Other compatible Python and Windows environments may also work.
 
-14. CURRENT STATUS
-------------------
-- Terminal pipeline completed
-- Streamlit interface completed
-- PDF, DOCX and image processing working
-- Local Ollama analysis working
-- Report download working
+## Privacy
 
-15. FINAL TESTS TO COMPLETE
----------------------------
-- Test a typed PDF
-- Test a scanned PDF
-- Test a DOCX file
-- Test a photograph or screenshot
-- Test custom questions
-- Test after restarting Windows
-- Confirm both PowerShell launchers work
+Document extraction and AI inference are performed locally.
+
+The normal workflow does not require:
+
+* Cloud AI APIs
+* Open WebUI
+* Docker
+* Uploading documents to an external AI service
+
+## Project Structure
+
+```text
+app.py                         Streamlit interface
+local_ai_pipeline.py           Extraction, OCR and AI pipeline
+Start_Local_AI_UI.ps1          Streamlit launcher
+Start_Local_AI_Pipeline.ps1    CLI launcher
+requirements-ui.txt            UI environment dependencies
+requirements-pipeline.txt      CLI environment dependencies
+```
+
+## Roadmap
+
+* [x] Local Ollama inference
+* [x] PDF text extraction
+* [x] Scanned PDF OCR
+* [x] Image OCR
+* [x] DOCX extraction
+* [x] Long-document processing
+* [x] Streamlit interface
+* [x] Downloadable reports
+* [ ] Retrieval-Augmented Generation (RAG)
+* [ ] Source/page citations
+* [ ] Automated tests
+* [ ] Improved configuration and logging
+
+## Limitations
+
+* AI-generated results may contain errors.
+* Important calculations, dates, financial information, and legal terms should be independently verified.
+* Large scanned documents may require significant processing time.
+* Performance depends on available system memory and hardware.
+
+This project is an applied local-AI prototype and is not a certified security or production system.
